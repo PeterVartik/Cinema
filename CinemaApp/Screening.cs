@@ -9,12 +9,22 @@ namespace CinemaApp
         // title nem lehet null vagy üres, totalSeats >= 1
         public Screening(string title, int totalSeats)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(title))
+            {
+                throw new ArgumentException("Title cannot be null or empty.", nameof(title));
+            }
+            if (totalSeats < 1)
+            {
+                throw new ArgumentException("Total seats must be at least 1.", nameof(totalSeats));
+            }
+            _title = title;
+            _totalSeats = totalSeats;
+            _bookedNames = new List<string>();
         }
 
         public string GetTitle()
         {
-            throw new NotImplementedException();
+            return _title;
         }
 
         // Visszatér false ha nincs szabad hely, vagy a személy már foglalt
@@ -37,7 +47,7 @@ namespace CinemaApp
         // Szabad helyek = _totalSeats - _bookedNames.Count
         public int GetAvailableSeats()
         {
-            throw new NotImplementedException();
+            return _totalSeats - _bookedNames.Count;
         }
 
         public int GetBookedCount()
