@@ -214,15 +214,98 @@ namespace CinemaApp.Tests
         // ha az alap feladattal már végzett vagy!
         // -------------------------------------------------------
 
-        // [TestMethod]
-        // public void AddToWaitingList_WhenFull()
-        // {
-        //     ...
-        // }
-        // TODO (extra): szabad hely esetén várólistára kerülés false-t kell hogy visszaadjon
-        // TODO (extra): már foglalással rendelkező személy várólistára kerülése false-t kell hogy visszaadjon
-        // TODO (extra): ugyanaz a személy kétszer próbál várólistára kerülni, másodszor false-t kap
-        // TODO (extra): lemondás után az első várólistás személy automatikusan foglalást kap
-        // TODO (extra): GetWaitingPosition nem létező személyre -1-et kell visszaadni
+        [TestMethod]
+        public void AddToWaitingList_WhenFull_ReturnsTrue()
+        {
+            var screening = new Screening("Inception", 2);
+            screening.BookSeat("Alice");
+            screening.BookSeat("Bob");
+            bool result = screening.AddToWaitingList("Charlie");
+            Assert.IsTrue(result);
+            Assert.AreEqual(1, screening.GetWaitingListCount());
+        }
+
+        [TestMethod]
+        public void AddToWaitingList_WhenHasAvailableSeats_ReturnsFalse()
+        {
+            var screening = new Screening("Inception", 2);
+            screening.BookSeat("Alice");
+            bool result = screening.AddToWaitingList("Bob");
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void AddToWaitingList_AlreadyBooked_ReturnsFalse()
+        {
+            var screening = new Screening("Inception", 2);
+            screening.BookSeat("Alice");
+            screening.BookSeat("Bob");
+            bool result = screening.AddToWaitingList("Alice");
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void AddToWaitingList_Duplicate_ReturnsFalse()
+        {
+            var screening = new Screening("Inception", 2);
+            screening.BookSeat("Alice");
+            screening.BookSeat("Bob");
+            screening.AddToWaitingList("Charlie");
+            bool result = screening.AddToWaitingList("Charlie");
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void CancelBooking_PromotesFirstWaitingUser()
+        {
+            var screening = new Screening("Inception", 2);
+            screening.BookSeat("Alice");
+            screening.BookSeat("Bob");
+            screening.AddToWaitingList("Charlie");
+            screening.AddToWaitingList("David");
+
+            bool cancelResult = screening.CancelBooking("Alice");
+            Assert.IsTrue(cancelResult);
+            Assert.IsTrue(screening.IsBooked("Charlie"));
+            Assert.IsFalse(screening.IsOnWaitingList("Charlie"));
+            Assert.IsTrue(screening.IsOnWaitingList("David"));
+            Assert.AreEqual(1, screening.GetWaitingPosition("David"));
+            Assert.AreEqual(1, screening.GetWaitingListCount());
+        }
+
+        [TestMethod]
+        public void GetWaitingPosition_NonExistingUser_ReturnsMinusOne()
+        {
+            var screening = new Screening("Inception", 2);
+            screening.BookSeat("Alice");
+            screening.BookSeat("Bob");
+            screening.AddToWaitingList("Charlie");
+            Assert.AreEqual(-1, screening.GetWaitingPosition("David"));
+        }
+
+        [TestMethod]
+        public void RemoveFromWaitingList_ExistingUser_ReturnsTrue()
+        {
+            var screening = new Screening("Inception", 2);
+            screening.BookSeat("Alice");
+            screening.BookSeat("Bob");
+            screening.AddToWaitingList("Charlie");
+            
+            bool removeResult = screening.RemoveFromWaitingList("Charlie");
+            Assert.IsTrue(removeResult);
+            Assert.IsFalse(screening.IsOnWaitingList("Charlie"));
+            Assert.AreEqual(0, screening.GetWaitingListCount());
+        }
+
+        [TestMethod]
+        public void RemoveFromWaitingList_NonExistingUser_ReturnsFalse()
+        {
+            var screening = new Screening("Inception", 2);
+            screening.BookSeat("Alice");
+            screening.BookSeat("Bob");
+            
+            bool removeResult = screening.RemoveFromWaitingList("Charlie");
+            Assert.IsFalse(removeResult);
+        }
     }
 }

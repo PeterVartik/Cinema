@@ -5,6 +5,7 @@ namespace CinemaApp
         private readonly string _title;
         private readonly int _totalSeats;
         private readonly List<string> _bookedNames;
+        private readonly List<string> _waitingList;
 
         // title nem lehet null vagy üres, totalSeats >= 1
         public Screening(string title, int totalSeats)
@@ -20,6 +21,7 @@ namespace CinemaApp
             _title = title;
             _totalSeats = totalSeats;
             _bookedNames = new List<string>();
+            _waitingList = new List<string>();
         }
 
         public string GetTitle()
@@ -80,31 +82,29 @@ namespace CinemaApp
         // ha az alap feladattal már végzett vagy!
         // -------------------------------------------------------
 
-        // private readonly List<string> _waitingList;
+        public bool AddToWaitingList(string name)
+        {
+            throw new NotImplementedException();
+        }
 
-        // public bool AddToWaitingList(string name)
-        // {
-        //     throw new NotImplementedException();
-        // }
+        public bool RemoveFromWaitingList(string name)
+        {
+            throw new NotImplementedException();
+        }
 
-        // public bool RemoveFromWaitingList(string name)
-        // {
-        //     throw new NotImplementedException();
-        // }
+        public bool IsOnWaitingList(string name)
+        {
+            throw new NotImplementedException();
+        }
 
-        // public bool IsOnWaitingList(string name)
-        // {
-        //     throw new NotImplementedException();
-        // }
+        public int GetWaitingListCount()
+        {
+            throw new NotImplementedException();
+        }
 
-        // public int GetWaitingListCount()
-        // {
-        //     throw new NotImplementedException();
-        // }
-
-        // public int GetWaitingPosition(string name)
-        // {
-        //     throw new NotImplementedException();
-        // }
+        public int GetWaitingPosition(string name)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
