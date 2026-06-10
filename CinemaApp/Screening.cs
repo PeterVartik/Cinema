@@ -45,12 +45,17 @@ namespace CinemaApp
         // Visszatér false ha a személy neve nem szerepel a _bookedNames listában
         public bool CancelBooking(string name)
         {
-            throw new NotImplementedException();
+            if (!_bookedNames.Contains(name))
+            {
+                return false;
+            }
+            _bookedNames.Remove(name);
+            return true;
         }
 
         public bool IsBooked(string name)
         {
-            throw new NotImplementedException();
+            return _bookedNames.Contains(name);
         }
 
         // Szabad helyek = _totalSeats - _bookedNames.Count
