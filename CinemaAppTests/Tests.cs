@@ -135,8 +135,21 @@ namespace CinemaApp.Tests
             screening.BookSeat("Bob");
             Assert.AreEqual(3, screening.GetAvailableSeats());
         }
-        // TODO: újonnan létrehozott vetítésnél a szabad helyek száma egyenlő a totalSeats értékével
-        // TODO: teli vetítésnél GetAvailableSeats() nullát kell visszaadni
+        [TestMethod]
+        public void GetAvailableSeats_NewScreening_EqualsTotalSeats()
+        {
+            var screening = CreateDefaultScreening();
+            Assert.AreEqual(5, screening.GetAvailableSeats());
+        }
+
+        [TestMethod]
+        public void GetAvailableSeats_FullScreening_EqualsZero()
+        {
+            var screening = new Screening("Inception", 2);
+            screening.BookSeat("Alice");
+            screening.BookSeat("Bob");
+            Assert.AreEqual(0, screening.GetAvailableSeats());
+        }
 
         // ---- GetBookedCount ----
 
@@ -148,8 +161,23 @@ namespace CinemaApp.Tests
             screening.BookSeat("Bob");
             Assert.AreEqual(2, screening.GetBookedCount());
         }
-        // TODO: újonnan létrehozott vetítésnél GetBookedCount() nullát kell visszaadni
-        // TODO: lemondás után a foglaltak száma helyesen csökken
+
+        [TestMethod]
+        public void GetBookedCount_NewScreening_EqualsZero()
+        {
+            var screening = CreateDefaultScreening();
+            Assert.AreEqual(0, screening.GetBookedCount());
+        }
+
+        [TestMethod]
+        public void GetBookedCount_AfterCancellation_Decreases()
+        {
+            var screening = CreateDefaultScreening();
+            screening.BookSeat("Alice");
+            screening.BookSeat("Bob");
+            screening.CancelBooking("Alice");
+            Assert.AreEqual(1, screening.GetBookedCount());
+        }
 
         // ---- IsHouseFull ----
 
@@ -161,8 +189,24 @@ namespace CinemaApp.Tests
             screening.BookSeat("Bob");
             Assert.IsTrue(screening.IsHouseFull());
         }
-        // TODO: szabad hellyel rendelkező vetítésnél false-t kell visszaadni
-        // TODO: lemondás után a vetítés már nem teli, IsHouseFull() false-t ad vissza
+
+        [TestMethod]
+        public void IsHouseFull_WithAvailableSeats_ReturnsFalse()
+        {
+            var screening = CreateDefaultScreening();
+            screening.BookSeat("Alice");
+            Assert.IsFalse(screening.IsHouseFull());
+        }
+
+        [TestMethod]
+        public void IsHouseFull_AfterCancellation_ReturnsFalse()
+        {
+            var screening = new Screening("Inception", 2);
+            screening.BookSeat("Alice");
+            screening.BookSeat("Bob");
+            screening.CancelBooking("Alice");
+            Assert.IsFalse(screening.IsHouseFull());
+        }
 
         // -------------------------------------------------------
         // EXTRA FELADAT — Várólista tesztek
