@@ -52,6 +52,13 @@ namespace CinemaApp
                 return false;
             }
             _bookedNames.Remove(name);
+
+            if (_waitingList.Count > 0)
+            {
+                string promotedUser = _waitingList[0];
+                _waitingList.RemoveAt(0);
+                _bookedNames.Add(promotedUser);
+            }
             return true;
         }
 
@@ -84,27 +91,50 @@ namespace CinemaApp
 
         public bool AddToWaitingList(string name)
         {
-            throw new NotImplementedException();
+            if (!IsHouseFull())
+            {
+                return false;
+            }
+            if (IsBooked(name))
+            {
+                return false;
+            }
+            if (IsOnWaitingList(name))
+            {
+                return false;
+            }
+            _waitingList.Add(name);
+            return true;
         }
 
         public bool RemoveFromWaitingList(string name)
         {
-            throw new NotImplementedException();
+            if (!IsOnWaitingList(name))
+            {
+                return false;
+            }
+            _waitingList.Remove(name);
+            return true;
         }
 
         public bool IsOnWaitingList(string name)
         {
-            throw new NotImplementedException();
+            return _waitingList.Contains(name);
         }
 
         public int GetWaitingListCount()
         {
-            throw new NotImplementedException();
+            return _waitingList.Count;
         }
 
         public int GetWaitingPosition(string name)
         {
-            throw new NotImplementedException();
+            int index = _waitingList.IndexOf(name);
+            if (index == -1)
+            {
+                return -1;
+            }
+            return index + 1;
         }
     }
 }
