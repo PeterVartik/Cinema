@@ -83,8 +83,22 @@ namespace CinemaApp.Tests
             Assert.IsTrue(result);
             Assert.AreEqual(5, screening.GetAvailableSeats());
         }
-        // TODO: nem létező foglalás lemondásakor false-t kell visszaadni
-        // TODO: lemondás után a személy neve már nem szerepel a foglaltak között
+        [TestMethod]
+        public void CancelBooking_NonExistingBooking_ReturnsFalse()
+        {
+            var screening = CreateDefaultScreening();
+            bool result = screening.CancelBooking("Alice");
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void CancelBooking_AfterCancellation_UserRemoved()
+        {
+            var screening = CreateDefaultScreening();
+            screening.BookSeat("Alice");
+            screening.CancelBooking("Alice");
+            Assert.IsFalse(screening.IsBooked("Alice"));
+        }
 
         // ---- IsBooked ----
 
@@ -95,8 +109,21 @@ namespace CinemaApp.Tests
             screening.BookSeat("Alice");
             Assert.IsTrue(screening.IsBooked("Alice"));
         }
-        // TODO: foglalás nélküli személyre false-t kell visszaadni
-        // TODO: lemondás után ugyanarra a személyre false-t kell visszaadni
+        [TestMethod]
+        public void IsBooked_UnbookedUser_ReturnsFalse()
+        {
+            var screening = CreateDefaultScreening();
+            Assert.IsFalse(screening.IsBooked("Alice"));
+        }
+
+        [TestMethod]
+        public void IsBooked_AfterCancellation_ReturnsFalse()
+        {
+            var screening = CreateDefaultScreening();
+            screening.BookSeat("Alice");
+            screening.CancelBooking("Alice");
+            Assert.IsFalse(screening.IsBooked("Alice"));
+        }
 
         // ---- GetAvailableSeats ----
 
