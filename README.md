@@ -21,7 +21,7 @@ C# mozi-vetítés projekt, megírt tesztekkel és implementált logikával.
 
 ## Lépések
 1. **Klónozás** megvolt
-2. **Kezdeti tesztek futtatása** (bukott) -> `peter_vartik_test_before.png`
+2. **Kezdeti tesztek futtatása**
 3. **Hiányzó tesztek** megírva
 4. **Osztályok implementálása** megírva
-5. **Minden teszt zöld** -> `peter_vartik_test_after.png`
+5. **Minden teszt zöld**
