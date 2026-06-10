@@ -30,7 +30,16 @@ namespace CinemaApp
         // Visszatér false ha nincs szabad hely, vagy a személy már foglalt
         public bool BookSeat(string name)
         {
-            throw new NotImplementedException();
+            if (GetAvailableSeats() <= 0)
+            {
+                return false;
+            }
+            if (_bookedNames.Contains(name))
+            {
+                return false;
+            }
+            _bookedNames.Add(name);
+            return true;
         }
 
         // Visszatér false ha a személy neve nem szerepel a _bookedNames listában
