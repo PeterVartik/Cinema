@@ -66,12 +66,12 @@ namespace CinemaApp
 
         public int GetBookedCount()
         {
-            throw new NotImplementedException();
+            return _bookedNames.Count;
         }
 
         public bool IsHouseFull()
         {
-            throw new NotImplementedException();
+            return _bookedNames.Count == _totalSeats;
         }
 
         // -------------------------------------------------------
